@@ -1,0 +1,7 @@
+Server:  openrg.home
+Address:  XXXXXXXXXXXXX
+
+Non-authoritative answer:
+Name:    google.com
+Addresses:  2607:f8b0:4006:804::200e
+          172.217.10.78
