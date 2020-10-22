@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  </head>
+  <body>
+    <script>
+      var questionBank = [
+        {
+          question: `What is the rarest M&M color?
+        A: Brown
+        B: Green
+        C: Blue
+        D: Red`,
+          answer: 'A'
+        },
+        {
+          question: `In what year were the first Air Jordan sneakers released?
+        A: 1940
+        B: 2016
+        C: 1984
+        D: 1890`,
+          answer: 'C'
+        },
+        {
+          question: `In a game of bingo, which number is represented by the phrase “two little ducks”?
+        A: 21
+        B: 20
+        C: 23
+        D: 22`,
+          answer: 'D'
+        }
+      ]
+
+      for(var i = 0; i < 4; i++){
+        var questionNumber = Math.floor(Math.random() * 3)
+        var questionWithAnswer = questionBank[questionNumber]
+
+        var question = questionWithAnswer.question
+
+        var input = prompt(question, 'Type in A, B, C, or D')
+
+        if(input == questionWithAnswer.answer){
+          alert('Correct!')
+        }else{
+          alert('Incorrect')
+        }
+      }
+    </script>
+  </body>
+</html>
