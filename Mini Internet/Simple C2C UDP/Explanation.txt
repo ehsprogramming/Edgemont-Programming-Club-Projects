@@ -1,0 +1,3 @@
+Just our day-1 activity. We started work on computer-to-computer communication using UDP. 
+
+I'm calling this C2C because P2P only makes sense in a context where there is some kind of a central server. In this case, we don't know what either of the devices are, and for all we care, they might as well be the same machine (in fact, they are). 
