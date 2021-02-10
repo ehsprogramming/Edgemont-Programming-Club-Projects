@@ -13,7 +13,7 @@ public class Chatting {
 			while(true) {
 				System.out.println(n.otherName + ": " + n.earliestMessage());
 			}
-		});
+		}).start();
 		
 		while(true) {
 			String message = sc.nextLine();

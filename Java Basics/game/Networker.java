@@ -55,8 +55,6 @@ public class Networker {
 		otherName = names.get(choice);
 		otherIP = addresses.get(choice);
 		
-		sc.close();
-		
 		new Thread(this::receiveMessages).start();
 	}
 	
