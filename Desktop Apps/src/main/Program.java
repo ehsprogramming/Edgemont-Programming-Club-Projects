@@ -1,24 +1,37 @@
 package main;
 
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Program extends Application {
+public class Program extends Application implements Initializable {
 
 	public static void main(String[] args) throws Exception {
 		Program.launch(args);
 	}
 	
-	static TextField field;
+	Networker networker;
+	InetAddress address;
+	String name;
+	
+	MessagePane messages;
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -69,26 +82,90 @@ public class Program extends Application {
 		pane.setPadding(new Insets(20));
 		VBox.setMargin(btn, new Insets(10));
 		
-		field = new TextField();
-		pane.getChildren().add(field);
-		
 		TextArea area = new TextArea();
 		pane.getChildren().add(area);
 				
 		//yournode.setStyle("-fx-background-color: #" + enteredByUser);
 		pane.setStyle("-fx-background-color: #FF8000");
 		
-		GridPane anchorPane = (GridPane) FXMLLoader.load(getClass().getResource("chattingscene.fxml"));
+		AnchorPane anchorPane = (AnchorPane) FXMLLoader.load(getClass().getResource("chattingscene.fxml"));
 		
-		Scene root = new Scene(anchorPane, 500, 500);
+		Scene root = new Scene(anchorPane, 750, 500);
 		
 		primaryStage.setScene(root);
 		primaryStage.show();
 	}
 	
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
+	}
+	
+	public class ChattingInterface implements NetworkInterface {
+
+		@Override
+		public void online(String nameE, InetAddress addressE) {
+			Platform.runLater(() -> {
+				Button button = new Button(nameE);
+				button.setMaxWidth(Double.POSITIVE_INFINITY);
+				
+				button.setOnAction((e) -> {
+					name = nameE;
+					address = addressE;
+					
+					messages = new MessagePane(name, address);
+					
+					scenePane.getChildren().add(messages);
+				});
+				
+				onlineFriends.getChildren().add(button);
+			});
+		}
+		
+		@Override
+		public void process(String message) {
+			Platform.runLater(() -> {
+				messages.displayReceivedMessage(message);
+			});
+		}
+		
+	}
+	
+	@FXML
+	AnchorPane scenePane;
+	
+	@FXML
+	VBox onlineFriends;
+	
+	@FXML
+	TextField message;
+	
+	@FXML
+	void send(ActionEvent event) {
+		String s = message.getText();
+		
+		Platform.runLater(() -> {
+			messages.displaySentMessage(s);
+		});
+		
+		networker.send(s, address);
+	}
+	
 	public static void button(ActionEvent event) {
 		System.out.println("Hello!");
-		System.out.println(field.getText());
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			networker = new Networker("Kenny", new ChattingInterface());
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+		
+		networker.findUsers();
 	}
 
 }
+ 
