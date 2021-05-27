@@ -3,8 +3,11 @@ package main;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Program extends Application implements Initializable {
 
@@ -30,8 +34,10 @@ public class Program extends Application implements Initializable {
 	InetAddress address;
 	String name;
 	
-	MessagePane messages;
+	Map<InetAddress, MessagePane> messages = new HashMap<>();
+	Map<InetAddress, String> names = new HashMap<>();
 	
+	MessagePane currentPane;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -106,6 +112,8 @@ public class Program extends Application implements Initializable {
 
 		@Override
 		public void online(String nameE, InetAddress addressE) {
+			names.put(addressE, nameE);
+			
 			Platform.runLater(() -> {
 				Button button = new Button(nameE);
 				button.setMaxWidth(Double.POSITIVE_INFINITY);
@@ -114,9 +122,36 @@ public class Program extends Application implements Initializable {
 					name = nameE;
 					address = addressE;
 					
-					messages = new MessagePane(name, address);
+					if(messages.containsKey(addressE)) {
+						MessagePane pane = messages.get(addressE);
+						
+						TranslateTransition t = new TranslateTransition(Duration.seconds(1));
+						t.setFromY(2000);
+						t.setToY(0);
+						t.setNode(pane);
+						t.play();
+					}else{
+						MessagePane pane = new MessagePane(name, address);
+						messages.put(addressE, pane);
+						
+						scenePane.getChildren().add(pane);
+						
+						TranslateTransition t = new TranslateTransition(Duration.seconds(1));
+						t.setFromY(2000);
+						t.setToY(0);
+						t.setNode(pane);
+						t.play();
+					}
 					
-					scenePane.getChildren().add(messages);
+					if(currentPane != null) {
+						TranslateTransition t = new TranslateTransition(Duration.seconds(1));
+						t.setFromY(0);
+						t.setToY(-2000);
+						t.setNode(currentPane);
+						t.play();
+					}
+					
+					currentPane = messages.get(addressE);
 				});
 				
 				onlineFriends.getChildren().add(button);
@@ -124,9 +159,20 @@ public class Program extends Application implements Initializable {
 		}
 		
 		@Override
-		public void process(String message) {
+		public void process(String message, InetAddress addr) {
 			Platform.runLater(() -> {
-				messages.displayReceivedMessage(message);
+				if(!names.containsKey(addr)) {
+					System.err.println(addr + " tried to chat without sending hello first");
+					return;
+				}
+				
+				if(!messages.containsKey(addr)) {
+					MessagePane pane = new MessagePane(names.get(addr), addr);
+					messages.put(addr, pane);
+					
+					scenePane.getChildren().add(pane);
+				}
+				messages.get(addr).displayReceivedMessage(message);
 			});
 		}
 		
@@ -146,7 +192,7 @@ public class Program extends Application implements Initializable {
 		String s = message.getText();
 		
 		Platform.runLater(() -> {
-			messages.displaySentMessage(s);
+			messages.get(address).displaySentMessage(s);
 		});
 		
 		networker.send(s, address);

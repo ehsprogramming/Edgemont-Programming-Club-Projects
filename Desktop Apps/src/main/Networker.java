@@ -170,7 +170,7 @@ public class Networker {
 			String text = new String(packet.getData(), 0, packet.getLength());
 			
 			messages.add(text);
-			code.process(text);
+			code.process(text, packet.getAddress());
 		}
 	}
 	
