@@ -1,0 +1,74 @@
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<style type="text/css">
+    canvas {border: 1px solid black;}
+</style>
+
+<script src="https://turbo.github.io/js/turbo.js"></script>
+
+<script>
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+
+    const width = height = 500
+
+    //fill the background
+    ctx.fillStyle = 'rgba(255, 255, 255, 1)'
+    ctx.fillRect(0, 0, width, height)
+    
+    const imageData = ctx.getImageData(0, 0, width, height)
+    
+    function getColorIndicesForCoord(x, y) {
+      var red = y * (width * 4) + x * 4;
+      return [red, red + 1, red + 2, red + 3];
+    }
+    
+    var index = getColorIndicesForCoord(250, 250)
+    
+    var pixels = turbojs.alloc(width * height)
+    
+    for(var i = 0; i < pixels.length; i++){
+        pixels.data[i] = i
+    }
+    
+    turbojs.run(pixels, `
+bool equal(float a, float b){
+    return abs(a - b) < 5.; //change this is the lines are too tin
+}
+bool evaluateEquation(float x, float y){
+    return equal(25., -x * x + y * y);
+}
+float calculate(float idx){
+    float x = mod(idx, ${width}.); //introduce shifting and zooming in
+    float y = floor(idx / ${width}.); //introduce shifting and zooming in
+    
+    if(evaluateEquation(x, y)){
+        return 0.0;
+    }else{
+        return 1.0;
+    }
+}
+void main(void){
+    vec4 values = read();
+    for(int i = 0; i < 4; i++){
+        float idx = values[i];
+        values[i] = calculate(idx);
+    }
+    commit(values);
+}
+    `)
+    
+    for(var y = 0; y < height; y++){
+        for(var x = 0; x < width; x++){
+            var canvasIdx = getColorIndicesForCoord(x, height - y - 1)
+            var idx = y * width + x
+            
+            if(pixels.data[idx] < 0.5){
+                imageData.data[canvasIdx[1]] = 0
+                imageData.data[canvasIdx[2]] = 0
+            }
+        }
+    }
+    
+    ctx.putImageData(imageData, 0, 0)
+</script>

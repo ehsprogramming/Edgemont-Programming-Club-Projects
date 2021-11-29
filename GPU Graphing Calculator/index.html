@@ -1,0 +1,88 @@
+<canvas id="canvas" width="500" height="500"></canvas>
+<style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+
+<script src="https://turbo.github.io/js/turbo.js"></script>
+
+<script>
+function equals(a, b){
+    return Math.abs(a - b) < 0.01
+}
+    
+function evaluateEquation(x, y){
+    return equals(y, x * x);
+}
+    
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const width = height = 500
+    
+
+function getColorIndicesForCoord(x, y) {
+  var red = y * (width * 4) + x * 4;
+  return [red, red + 1, red + 2, red + 3];
+}
+
+ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+ctx.fillRect(0, 0, width, height);
+const imageData = ctx.getImageData(0, 0, width, height);
+
+const xscale = 0.1
+const yscale = 0.1
+
+var x_offset = -20
+var y_offset = -10.0
+
+var pixels = turbojs.alloc(width * height)
+
+for(var i = 0; i < pixels.length; i++){
+    pixels.data[i] = i;
+}
+
+turbojs.run(pixels, `
+        bool equals(float x, float y){
+            return abs(x - y) < (log(min(abs(x) + 1., abs(y) + 1.))) + .04;
+        }
+        float avg(float a, float b){
+        	return (a + b) / 2.;
+        }
+        bool evaluateEquation(float x, float y){
+            return equals(y * y, x * x + 5.);
+        }
+        float eval(float idx){
+            float x = mod(idx, ${width}.) * ${xscale} + ${x_offset}.;
+            float y = floor(idx / ${width}.) * ${yscale} + ${y_offset}.;
+
+            if(evaluateEquation(x, y)){
+                return 0.;
+            }else{
+                return 1.;
+            }
+        }
+        float max(float a, float b, float c, float d, float e){
+        	return max(a, max(b, max(c, max(d, e))));
+        }
+        void main(void){
+                vec4 ans = read();
+                for(int i = 0; i < 4; i++){
+                	float idx = ans[i];
+                	ans[i] = max(eval(idx), eval(idx + 1.), eval(idx - 1.), eval(idx - ${width}.), eval(idx + ${width}.));
+                }
+                
+                commit(ans);
+            }`)
+
+console.log("executed kernel")
+for(var r = 0; r < height; r++){
+    for(var x = 0; x < width; x++){
+        var y = height - r - 1;
+        var indices = getColorIndicesForCoord(x, y);
+       	imageData.data[indices[0]] = pixels.data[r * width + x] * 255
+        imageData.data[indices[1]] = pixels.data[r * width + x] * 255
+        imageData.data[indices[2]] = pixels.data[r * width + x] * 255
+    }
+}
+ctx.putImageData(imageData, 0, 0);
+    
+</script>
