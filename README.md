@@ -1,2 +1,2 @@
 # Edgemont-Programming-Club-Projects
-A compilation of all the projects I have taught as part of the Edgemont Programming Club. 
+A compilation of some of the projects (starting in 2020) that I've taught as part of the Edgemont Programming Club. 
