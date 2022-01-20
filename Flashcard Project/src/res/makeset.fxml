@@ -11,12 +11,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.CreatePane">
    <children>
       <StackPane layoutY="323.0" prefHeight="77.0" prefWidth="600.0" style="-fx-background-color: brown;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="323.0">
          <children>
-            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" onAction="#save" text="Save" />
          </children>
       </StackPane>
       <AnchorPane prefHeight="325.0" prefWidth="600.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -36,7 +35,7 @@
               <content>
                 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="78.0" prefWidth="600.0">
                      <children>
-                        <AnchorPane layoutY="-6.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane id="card" fx:id="card" layoutY="-6.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <TextField layoutX="29.0" layoutY="32.0" prefHeight="26.0" prefWidth="182.0" promptText="Term" AnchorPane.bottomAnchor="31.199999999999996" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="388.6" AnchorPane.topAnchor="32.0" />
                               <Button layoutX="520.0" layoutY="32.0" mnemonicParsing="false" text="Delete" AnchorPane.bottomAnchor="31.999999999999993" AnchorPane.leftAnchor="520.0" AnchorPane.rightAnchor="29.6" AnchorPane.topAnchor="32.0" />

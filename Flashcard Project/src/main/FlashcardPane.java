@@ -8,6 +8,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -29,6 +30,7 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 		}
 		
 		setOnKeyReleased(this);
+		setOnMouseReleased(this::mouse);
 		
 		goLeft = new TranslateTransition(Duration.millis(250), this);
 		goLeft.setByX(500);
@@ -46,6 +48,10 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 	
 	public void addFlashcard(Flashcard f) {
 		cards.add(f);
+	}
+	
+	public void mouse(MouseEvent event) {
+		current.flip();
 	}
 
 	@Override
