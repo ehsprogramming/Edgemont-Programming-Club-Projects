@@ -5,16 +5,14 @@ import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Camera;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Parent;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
@@ -55,8 +53,11 @@ public class Main extends Application {
 		
 		buttons = new VBox();
 		
+		
 		Button study = new Button("Study");
 		Button create = new Button("Create");
+		
+		buttons.setAlignment(Pos.CENTER);
 		
 		study.setOnAction(this::study);
 		create.setOnAction(this::create);
@@ -71,7 +72,7 @@ public class Main extends Application {
 		camera = new ParallelCamera();//new PerspectiveCamera();
 		scene.setCamera(camera);
 		primaryStage.setScene(scene);
-		//primaryStage.setResizable(false);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 		
 		root.getChildren().removeAll(makeset, cardPane);

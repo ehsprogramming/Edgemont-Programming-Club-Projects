@@ -23,7 +23,7 @@
             <HBox alignment="CENTER" layoutY="56.0" prefHeight="42.0" prefWidth="600.0" AnchorPane.bottomAnchor="226.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
                <children>
                   <Label text="Flashcards Title: " />
-                  <TextField />
+                  <TextField fx:id="title" />
                </children>
             </HBox>
             <Text layoutX="192.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Flashcards" textAlignment="CENTER" AnchorPane.leftAnchor="192.0" AnchorPane.rightAnchor="192.6328125" AnchorPane.topAnchor="14.2890625">
@@ -31,17 +31,18 @@
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Text>
-            <ScrollPane layoutY="100.0" prefHeight="225.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+            <ScrollPane layoutY="100.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="225.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
               <content>
-                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="78.0" prefWidth="600.0">
+                <AnchorPane fx:id="scroll" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="600.0">
                      <children>
                         <AnchorPane id="card" fx:id="card" layoutY="-6.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TextField layoutX="29.0" layoutY="32.0" prefHeight="26.0" prefWidth="182.0" promptText="Term" AnchorPane.bottomAnchor="31.199999999999996" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="388.6" AnchorPane.topAnchor="32.0" />
-                              <Button layoutX="520.0" layoutY="32.0" mnemonicParsing="false" text="Delete" AnchorPane.bottomAnchor="31.999999999999993" AnchorPane.leftAnchor="520.0" AnchorPane.rightAnchor="29.6" AnchorPane.topAnchor="32.0" />
-                              <TextArea layoutX="244.0" layoutY="25.0" prefHeight="38.0" prefWidth="252.0" promptText="Definition" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="25.0" />
+                              <TextField fx:id="termText" layoutX="29.0" layoutY="32.0" prefHeight="26.0" prefWidth="182.0" promptText="Term" AnchorPane.bottomAnchor="31.199999999999996" AnchorPane.leftAnchor="29.0" AnchorPane.rightAnchor="388.6" AnchorPane.topAnchor="32.0" />
+                              <Button fx:id="delete1" layoutX="520.0" layoutY="32.0" mnemonicParsing="false" text="Delete" AnchorPane.bottomAnchor="31.999999999999993" AnchorPane.leftAnchor="520.0" AnchorPane.rightAnchor="29.6" AnchorPane.topAnchor="32.0" />
+                              <TextArea fx:id="defText" layoutX="244.0" layoutY="25.0" prefHeight="38.0" prefWidth="252.0" promptText="Definition" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="25.0" />
                            </children>
                         </AnchorPane>
+                        <Button fx:id="addTerm" layoutX="267.0" layoutY="90.0" mnemonicParsing="false" onAction="#addTerm" text="Add term" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="266.6" AnchorPane.topAnchor="90.0" />
                      </children>
                   </AnchorPane>
               </content>
