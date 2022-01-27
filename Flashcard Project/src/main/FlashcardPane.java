@@ -34,13 +34,15 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 		setOnKeyReleased(this);
 		setOnMouseReleased(this::mouse);
 		
-		goLeft = new TranslateTransition(Duration.millis(250), this);
+		goLeft = new TranslateTransition(Duration.millis(150), this);
 		goLeft.setByX(500);
+		//goLeft.setInterpolator(Interpolator.LINEAR);
 		goLeft.setInterpolator(Interpolator.EASE_BOTH);
 		
-		goRight = new TranslateTransition(Duration.millis(250), this);
+		goRight = new TranslateTransition(Duration.millis(150), this);
 		goRight.setByX(-500);
 		goRight.setInterpolator(Interpolator.EASE_BOTH);
+		//goRight.setInterpolator(Interpolator.LINEAR);
 		
 		goRight.setOnFinished(evt -> anim.set(false));
 		goLeft.setOnFinished(evt -> anim.set(false));
@@ -111,12 +113,9 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 	public void setCards(StudySet read) {
 		clearCards();
 		
-		System.out.println(read.data);
-		
 		//TODO: title
 		
 		for(FlashcardData fd : read.data) {
-			System.out.println("Add " + fd.term + " " + fd.definition);
 			addFlashcard(new Flashcard(fd.term, fd.definition));
 		}
 	}

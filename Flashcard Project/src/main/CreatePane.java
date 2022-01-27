@@ -60,6 +60,7 @@ public class CreatePane implements Initializable {
 	public void save(ActionEvent evt) {
 		FileUtil.save(this);
 		
+		Main.main.select.rescan();
 		Main.main.showMenu();
 	}
 	

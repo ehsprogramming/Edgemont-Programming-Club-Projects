@@ -65,12 +65,12 @@ public class Main extends Application {
 		selectBtn.setOnAction(this::select);
 		create.setOnAction(this::create);
 		
-		buttons.getChildren().addAll(selectBtn, create);
+		buttons.getChildren().addAll(create, selectBtn);
 		
 		
 		select = new SelectPane();
 		select.setTranslateX(-600);
-		
+		select.rescan();
 		
 		
 		

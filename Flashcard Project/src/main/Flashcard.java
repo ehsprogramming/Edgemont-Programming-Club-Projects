@@ -42,6 +42,7 @@ public class Flashcard extends StackPane {
 		flip1.setAxis(Rotate.X_AXIS);
 		flip1.setFromAngle(0);
 		flip1.setToAngle(90);
+		//flip1.setInterpolator(Interpolator.LINEAR);
 		flip1.setInterpolator(Interpolator.EASE_IN);
 		
 		TranslateTransition tt = new TranslateTransition();
@@ -52,6 +53,7 @@ public class Flashcard extends StackPane {
 		flip2.setAxis(Rotate.X_AXIS);
 		flip2.setFromAngle(90);
 		flip2.setToAngle(180);
+		//flip2.setInterpolator(Interpolator.LINEAR);
 		flip2.setInterpolator(Interpolator.EASE_OUT);
 		
 		flip = new SequentialTransition(flip1, tt, flip2);

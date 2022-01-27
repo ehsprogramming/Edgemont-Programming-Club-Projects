@@ -13,6 +13,12 @@ import main.Main;
 public class SelectPane extends VBox {
 
 	public SelectPane() {
+		
+	}
+	
+	public void rescan() {
+		getChildren().clear();
+		
 		File[] list = FileUtil.savedSets();
 		
 		for(File f: list) {
