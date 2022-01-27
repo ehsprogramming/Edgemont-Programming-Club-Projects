@@ -37,21 +37,28 @@ public class CreatePane implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		cards = new ArrayList<>();
 		
-		var ccu = new CreateCardUI(termText, defText, delete1);
+		var ccu = new CreateCardUI(termText, defText, delete1, card);
 		
 		cards.add(ccu);
 		
 		delete1.setOnAction(evt -> {
+			int idx = cards.indexOf(ccu);
+			
 			scroll.getChildren().remove(card);
 			cards.remove(ccu);
 			AnchorPane.setTopAnchor(addTerm, AnchorPane.getTopAnchor(addTerm) - 89.6);
+			
+			for(int i = idx; i < cards.size(); i++) {
+				var card = cards.get(i);
+				AnchorPane.setTopAnchor(card.pane, AnchorPane.getTopAnchor(card.pane) - 89.6);
+			}
 		});
 		
 		System.out.println("Initialize");
 	}
 	
 	public void save(ActionEvent evt) {
-		System.out.println(title.getText());
+		FileUtil.save(this);
 		
 		Main.main.showMenu();
 	}
@@ -101,13 +108,21 @@ public class CreatePane implements Initializable {
 		ccu.button = delete;
 		ccu.def = def;
 		ccu.term = term;
+		ccu.pane = newCard;
 		
 		cards.add(ccu);
 		
 		delete.setOnAction(e -> {
+			int idx = cards.indexOf(ccu);
+			
 			scroll.getChildren().remove(newCard);
 			cards.remove(ccu);
 			AnchorPane.setTopAnchor(addTerm, AnchorPane.getTopAnchor(addTerm) - 89.6);
+			
+			for(int i = idx; i < cards.size(); i++) {
+				var card = cards.get(i);
+				AnchorPane.setTopAnchor(card.pane, AnchorPane.getTopAnchor(card.pane) - 89.6);
+			}
 		});
 	}
 

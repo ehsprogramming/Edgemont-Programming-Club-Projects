@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.panes.SelectPane;
 
 public class Main extends Application {
 
@@ -27,6 +28,7 @@ public class Main extends Application {
 	StackPane root;
 	VBox buttons;
 	FlashcardPane cardPane;
+	SelectPane select;
 	Parent makeset;
 	Camera camera;
 	
@@ -53,20 +55,28 @@ public class Main extends Application {
 		
 		buttons = new VBox();
 		
-		
-		Button study = new Button("Study");
+		Button selectBtn = new Button("Study");
 		Button create = new Button("Create");
 		
 		buttons.setAlignment(Pos.CENTER);
 		
-		study.setOnAction(this::study);
+		selectBtn.setOnAction(this::select);
 		create.setOnAction(this::create);
 		
-		buttons.getChildren().addAll(study, create);
+		buttons.getChildren().addAll(selectBtn, create);
+		
+		
+		select = new SelectPane();
+		select.setTranslateX(-600);
+		
+		
+		
+		
 		
 		root.getChildren().add(buttons);
 		root.getChildren().add(makeset);
 		root.getChildren().add(cardPane);
+		root.getChildren().add(select);
 		
 		var scene = new Scene(root, 600, 400);
 		camera = new ParallelCamera();//new PerspectiveCamera();
@@ -75,7 +85,21 @@ public class Main extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
-		root.getChildren().removeAll(makeset, cardPane);
+		root.getChildren().removeAll(makeset, cardPane, select);
+	}
+	
+	public void select(ActionEvent evt) {
+		root.getChildren().addAll(select);
+		
+		TranslateTransition tt = new TranslateTransition(Duration.millis(500), root);
+		tt.setByX(600);
+		tt.setOnFinished(e -> {
+			select.requestFocus();
+			root.getChildren().remove(buttons);
+			root.getChildren().remove(makeset);
+			root.getChildren().remove(cardPane);
+			});
+		tt.play();
 	}
 
 	public void study(ActionEvent evt) {
@@ -87,6 +111,7 @@ public class Main extends Application {
 			cardPane.requestFocus();
 			root.getChildren().remove(buttons);
 			root.getChildren().remove(makeset);
+			root.getChildren().remove(select);
 			});
 		tt.play();
 	}
@@ -99,6 +124,7 @@ public class Main extends Application {
 		tt.setOnFinished(e -> {
 			root.getChildren().remove(buttons);
 			root.getChildren().remove(cardPane);
+			root.getChildren().remove(select);
 		});
 		tt.play();
 	}
@@ -111,6 +137,7 @@ public class Main extends Application {
 		tt.setOnFinished(e -> {
 			root.getChildren().remove(makeset);
 			root.getChildren().remove(cardPane);
+			root.getChildren().remove(select);
 		});
 		tt.play();
 	}
