@@ -41,10 +41,9 @@ public class FileUtil {
 		
 	}
 	
-	public static StudySet read(String name) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(documents, name + ".flip")), "utf-8"));
+	public static StudySet read(File name) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(name), "utf-8"));
 		
-		String title = null;
 		String term = null;
 		String definition = null;
 		
@@ -59,7 +58,7 @@ public class FileUtil {
 			if(ch == '\0') {
 				String text = sb.toString();
 				
-				if(title == null) {
+				if(ss.title == null) {
 					ss.title = text;
 				}else if(term == null) {
 					term = text;
@@ -73,19 +72,18 @@ public class FileUtil {
 				}
 				
 				sb = new StringBuffer();
-			}else
+			}else{
 				sb.append(ch);
+			}
 		}
+		
+		br.close();
 		
 		return ss;
 	}
 	
 	public static File[] savedSets() {
 		return documents.listFiles((File directory, String fileName) -> fileName.endsWith(".flip"));
-	}
-	
-	public static void main(String[] args) throws IOException {
-		
 	}
 	
 }

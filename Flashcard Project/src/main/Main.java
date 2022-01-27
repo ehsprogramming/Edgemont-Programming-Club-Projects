@@ -1,4 +1,6 @@
 package main;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,16 +104,20 @@ public class Main extends Application {
 		tt.play();
 	}
 
-	public void study(ActionEvent evt) {
+	public void study(File f) throws IOException {
 		root.getChildren().addAll(cardPane);
+		
+		cardPane.setCards(FileUtil.read(f));
 		
 		TranslateTransition tt = new TranslateTransition(Duration.millis(500), root);
 		tt.setByY(-400);
+		tt.setByX(-600);
 		tt.setOnFinished(e -> {
-			cardPane.requestFocus();
 			root.getChildren().remove(buttons);
 			root.getChildren().remove(makeset);
 			root.getChildren().remove(select);
+			
+			cardPane.requestFocus();
 			});
 		tt.play();
 	}

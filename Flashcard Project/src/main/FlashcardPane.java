@@ -11,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import main.data.FlashcardData;
+import main.data.StudySet;
 
 public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 
@@ -46,8 +48,23 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 		anim = new SimpleBooleanProperty(false);
 	}
 	
+	public void clearCards() {
+		for(Flashcard f: cards) {
+			getChildren().remove(f);
+		}
+		
+		cards.clear();
+		current = null;
+	}
+	
 	public void addFlashcard(Flashcard f) {
+		getChildren().add(f);
+		f.setTranslateX(500 * cards.size());
 		cards.add(f);
+		
+		if(current == null) {
+			current = f;
+		}
 	}
 	
 	public void mouse(MouseEvent event) {
@@ -88,6 +105,19 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	public void setCards(StudySet read) {
+		clearCards();
+		
+		System.out.println(read.data);
+		
+		//TODO: title
+		
+		for(FlashcardData fd : read.data) {
+			System.out.println("Add " + fd.term + " " + fd.definition);
+			addFlashcard(new Flashcard(fd.term, fd.definition));
 		}
 	}
 	
