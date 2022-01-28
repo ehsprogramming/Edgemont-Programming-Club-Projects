@@ -3,11 +3,11 @@ package main;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -26,6 +26,10 @@ public class Flashcard extends StackPane {
 		this.definition = definition;
 		
 		Label text = new Label(term);
+		text.setAlignment(Pos.CENTER);
+		text.setWrapText(true);
+		text.setMaxWidth(275);
+		
 		Rectangle card = new Rectangle();
 		card.setWidth(300);
 		card.setHeight(150);

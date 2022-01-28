@@ -54,6 +54,21 @@ public class CreatePane implements Initializable {
 			}
 		});
 		
+		{
+			int idx = cards.indexOf(ccu);
+			
+			scroll.getChildren().remove(card);
+			cards.remove(ccu);
+			AnchorPane.setTopAnchor(addTerm, AnchorPane.getTopAnchor(addTerm) - 89.6);
+			
+			for(int i = idx; i < cards.size(); i++) {
+				var card = cards.get(i);
+				AnchorPane.setTopAnchor(card.pane, AnchorPane.getTopAnchor(card.pane) - 89.6);
+			}
+		}
+		
+		addTerm(null);
+		
 		System.out.println("Initialize");
 	}
 	
@@ -65,7 +80,6 @@ public class CreatePane implements Initializable {
 	}
 	
 	public void addTerm(ActionEvent evt) {
-		
 		AnchorPane newCard = new AnchorPane();
 		AnchorPane.setLeftAnchor(newCard, 0.0);
 		AnchorPane.setRightAnchor(newCard, 0.0);
@@ -84,12 +98,13 @@ public class CreatePane implements Initializable {
 		AnchorPane.setLeftAnchor(term, 29.0);
 		
 		TextArea def = new TextArea();
-		def.setPrefHeight(38.0);
+		//def.setPrefHeight(75.0);
 		def.setPrefWidth(252.0);
+		def.setWrapText(true);
 		def.setPromptText("Definition");
 		
-		AnchorPane.setBottomAnchor(def, 27.0);
-		AnchorPane.setTopAnchor(def, 25.0);
+		AnchorPane.setBottomAnchor(def, 10.0);
+		AnchorPane.setTopAnchor(def, 10.0);
 		AnchorPane.setLeftAnchor(def, 244.0);
 		
 		Button delete = new Button();
