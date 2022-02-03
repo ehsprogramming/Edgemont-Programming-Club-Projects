@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import main.FileUtil;
@@ -37,6 +38,10 @@ public class SelectPane extends StackPane {
 		buttons.getChildren().clear();
 		
 		File[] list = FileUtil.savedSets();
+		
+		if(list.length == 0) {
+			buttons.getChildren().add(StyleUtil.style(new Label("No study sets found")));
+		}
 		
 		for(File f: list) {
 			String full = f.getName();
