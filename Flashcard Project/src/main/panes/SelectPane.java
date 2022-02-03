@@ -3,26 +3,45 @@ package main.panes;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import main.FileUtil;
 import main.Main;
+import main.StyleUtil;
 
-public class SelectPane extends VBox {
+public class SelectPane extends StackPane {
 
+	VBox buttons;
+	
 	public SelectPane() {
+		buttons = new VBox();
+		buttons.setAlignment(Pos.CENTER);
+		Button backButton = new Button("Back");
+		backButton.setTranslateX(250);
+		backButton.setTranslateY(-175);
+		backButton.setStyle("-fx-background-color: lavender;"
+				+ "-fx-background-radius: 10;");
+		backButton.setPadding(new Insets(10, 20, 10, 20));
+		getChildren().add(buttons);
+		getChildren().add(backButton);
 		
+		backButton.setOnAction(evt -> Main.main.showMenu());
 	}
 	
 	public void rescan() {
-		getChildren().clear();
+		buttons.getChildren().clear();
 		
 		File[] list = FileUtil.savedSets();
 		
 		for(File f: list) {
-			var btn = new Button(f.getName());
+			String full = f.getName();
+			String noExt = full.substring(0, full.lastIndexOf('.'));
+			var btn = new Button(noExt);
 			
 			btn.setOnAction(evt -> {
 				try {
@@ -38,7 +57,12 @@ public class SelectPane extends VBox {
 					alert.showAndWait();
 				}
 			});
-			getChildren().add(btn);
+			
+			StyleUtil.style("lightcoral", btn);
+			
+			buttons.setSpacing(10);
+			
+			buttons.getChildren().add(btn);
 		}
 	}
 	

@@ -50,15 +50,19 @@ public class Main extends Application {
 		list.add(new Flashcard("Term2", "Definition2"));
 		
 		cardPane = new FlashcardPane(list);
-		cardPane.setTranslateY(400);
+		cardPane.setTranslateY(-800);
 		
 		makeset = FXMLLoader.load(getClass().getResource("/res/makeset.fxml"));
 		makeset.setTranslateY(-400);
 		
 		buttons = new VBox();
 		
+		buttons.setSpacing(10);
+		
 		Button selectBtn = new Button("Study");
 		Button create = new Button("Create");
+		
+		StyleUtil.style("mediumaquamarine", selectBtn, create);
 		
 		buttons.setAlignment(Pos.CENTER);
 		
@@ -69,7 +73,8 @@ public class Main extends Application {
 		
 		
 		select = new SelectPane();
-		select.setTranslateX(-600);
+		//select.setTranslateX(-600);
+		select.setTranslateY(-400);
 		select.rescan();
 		
 		
@@ -84,7 +89,7 @@ public class Main extends Application {
 		camera = new ParallelCamera();//new PerspectiveCamera();
 		scene.setCamera(camera);
 		primaryStage.setScene(scene);
-		primaryStage.setResizable(false);
+		//primaryStage.setResizable(false);
 		primaryStage.show();
 		
 		root.getChildren().removeAll(makeset, cardPane, select);
@@ -94,7 +99,9 @@ public class Main extends Application {
 		root.getChildren().addAll(select);
 		
 		TranslateTransition tt = new TranslateTransition(Duration.millis(500), root);
-		tt.setByX(600);
+		//tt.setToX(600);
+		//tt.setToY(0);
+		tt.setToY(400);
 		tt.setOnFinished(e -> {
 			select.requestFocus();
 			root.getChildren().remove(buttons);
@@ -110,8 +117,9 @@ public class Main extends Application {
 		cardPane.setCards(FileUtil.read(f));
 		
 		TranslateTransition tt = new TranslateTransition(Duration.millis(500), root);
-		tt.setByY(-400);
-		tt.setByX(-600);
+		//tt.setByY(-400);
+		//tt.setByX(-600);
+		tt.setToY(800);
 		tt.setOnFinished(e -> {
 			root.getChildren().remove(buttons);
 			root.getChildren().remove(makeset);
@@ -140,6 +148,7 @@ public class Main extends Application {
 		
 		TranslateTransition tt = new TranslateTransition(Duration.millis(500), root);
 		tt.setToY(0);
+		tt.setToX(0);
 		tt.setOnFinished(e -> {
 			root.getChildren().remove(makeset);
 			root.getChildren().remove(cardPane);

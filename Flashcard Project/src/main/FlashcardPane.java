@@ -7,6 +7,8 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -21,25 +23,28 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 	public int index = 0;
 	public TranslateTransition goLeft, goRight;
 	public BooleanProperty anim;
+	public StackPane cardsPane;
 	
 	public FlashcardPane(List<Flashcard> cards) {
 		this.cards = cards;
 		current = cards.get(0);
 		
+		cardsPane = new StackPane();
+		
 		for(int i = 0; i < cards.size(); i++) {
-			getChildren().add(cards.get(i));
+			cardsPane.getChildren().add(cards.get(i));
 			cards.get(i).setTranslateX(500 * i);
 		}
 		
 		setOnKeyReleased(this);
 		setOnMouseReleased(this::mouse);
 		
-		goLeft = new TranslateTransition(Duration.millis(150), this);
+		goLeft = new TranslateTransition(Duration.millis(150), cardsPane);
 		goLeft.setByX(500);
 		//goLeft.setInterpolator(Interpolator.LINEAR);
 		goLeft.setInterpolator(Interpolator.EASE_BOTH);
 		
-		goRight = new TranslateTransition(Duration.millis(150), this);
+		goRight = new TranslateTransition(Duration.millis(150), cardsPane);
 		goRight.setByX(-500);
 		goRight.setInterpolator(Interpolator.EASE_BOTH);
 		//goRight.setInterpolator(Interpolator.LINEAR);
@@ -48,19 +53,48 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 		goLeft.setOnFinished(evt -> anim.set(false));
 		
 		anim = new SimpleBooleanProperty(false);
+		
+		cardsPane.requestFocus();
+		cardsPane.requestLayout();
+		
+		Button backButton = new Button("Back");
+		backButton.setTranslateX(-250);
+		backButton.setTranslateY(-175);
+		
+		backButton.setStyle("-fx-background-color: lavender;"
+				+ "-fx-background-radius: 10;");
+		backButton.setPadding(new Insets(10, 20, 10, 20));
+		
+		backButton.setOnAction(evt -> Main.main.select(evt));
+		
+		getChildren().add(cardsPane);
+		getChildren().add(backButton);
 	}
 	
 	public void clearCards() {
+		System.out.println("Clear cards");
+		
+		index = 0;
+		
 		for(Flashcard f: cards) {
-			getChildren().remove(f);
+			cardsPane.getChildren().remove(f);
 		}
 		
 		cards.clear();
 		current = null;
+		
+		cardsPane.setTranslateX(0);
+		
+		TranslateTransition tt = new TranslateTransition(Duration.millis(0), cardsPane);
+		
+		tt.setToX(0);
+		tt.setToY(0);
+		
+		tt.play();
 	}
 	
 	public void addFlashcard(Flashcard f) {
-		getChildren().add(f);
+		cardsPane.getChildren().add(f);
 		f.setTranslateX(500 * cards.size());
 		cards.add(f);
 		
@@ -112,8 +146,6 @@ public class FlashcardPane extends StackPane implements EventHandler<KeyEvent> {
 	
 	public void setCards(StudySet read) {
 		clearCards();
-		
-		//TODO: title
 		
 		for(FlashcardData fd : read.data) {
 			addFlashcard(new Flashcard(fd.term, fd.definition));

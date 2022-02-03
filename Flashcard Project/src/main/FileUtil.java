@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.util.List;
 
 import javax.swing.filechooser.FileSystemView;
@@ -17,12 +18,29 @@ import main.data.StudySet;
 
 public class FileUtil {
 
-	static File documents = FileSystemView.getFileSystemView().getDefaultDirectory();
+	final static String EXTENSION = ".thisisaflashcardprogramwitharidiculouslylongname";
+	static File documents = new File(FileSystemView.getFileSystemView().getDefaultDirectory(), "/testlet/");
+	
+	static {{
+		System.out.println("SDF:LKDSF");
+		System.out.println(documents.getAbsolutePath());
+		if(!documents.isDirectory()) {
+			try {
+				Files.createDirectory(documents.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Does not exist");
+			System.out.println(documents.mkdir());
+			System.out.println(documents.mkdirs());
+			System.out.println(documents.isDirectory());
+		}
+	}}
 	
 	public static void save(CreatePane create) {
 		try {
 			BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(new File(documents, create.title.getText() + ".flip")), "utf-8"));
+					new OutputStreamWriter(new FileOutputStream(new File(documents, create.title.getText() + EXTENSION)), "utf-8"));
 			
 			bw.append(create.title.getText());
 			bw.append('\0');
@@ -83,7 +101,7 @@ public class FileUtil {
 	}
 	
 	public static File[] savedSets() {
-		return documents.listFiles((File directory, String fileName) -> fileName.endsWith(".flip"));
+		return documents.listFiles((File directory, String fileName) -> fileName.endsWith(EXTENSION));
 	}
 	
 }

@@ -8,9 +8,11 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 
 public class CreatePane implements Initializable {
@@ -73,6 +75,31 @@ public class CreatePane implements Initializable {
 	}
 	
 	public void save(ActionEvent evt) {
+		StringBuilder message = new StringBuilder();
+		
+		if(title.getText().trim().length() == 0) {
+			message.append("Please give your study set a name\n");
+		}
+		
+		int counter = 1;
+		for(var card: cards) {
+			if(card.def.getText().trim().length() == 0 || card.term.getText().trim().length() == 0) {
+				message.append("Flash card " + counter + " is missing term or definition\n");
+			}
+			counter++;
+		}
+		
+		if(message.length() > 0) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Could not save study set");
+			alert.setHeaderText("Study set has incomplete information");
+			alert.setContentText(message.toString());
+	
+			alert.showAndWait();
+			
+			return;
+		}
+		
 		FileUtil.save(this);
 		
 		Main.main.select.rescan();
