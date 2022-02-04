@@ -89,7 +89,7 @@ public class Main extends Application {
 		camera = new ParallelCamera();//new PerspectiveCamera();
 		scene.setCamera(camera);
 		primaryStage.setScene(scene);
-		//primaryStage.setResizable(false);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 		
 		root.getChildren().removeAll(makeset, cardPane, select);
